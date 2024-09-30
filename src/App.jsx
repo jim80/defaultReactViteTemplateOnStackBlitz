@@ -16,7 +16,7 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>The Default Vite + React Template on stackblitz</h1>
+      <h1>The Default Vite + React Template on stackblitz, now as github repo, which seems to have got me the other editor? WHAT!</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 100)}>
           count is {count}
