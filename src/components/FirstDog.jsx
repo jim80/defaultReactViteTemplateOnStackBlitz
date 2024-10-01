@@ -1,17 +1,20 @@
 import useFetch from "../hooks/useFetch"
 
+import ImageViewer from './ImageViewer'
+
 const FirstDog = () => {
-    
-    const randomDogUrl = "https://dog.ceo/api/breeds/image/random";
 
-   let { status, data } = useFetch(randomDogUrl);
+    const RANDOM_DOG_URL = "https://dog.ceo/api/breeds/image/random";
 
-    return(
+    let { status, data } = useFetch (RANDOM_DOG_URL);
+
+    return (
         <>
-        <p>I am a First Dog</p>
-        <div><h2>{status}</h2></div>
-        <div><h2>{data.message}</h2></div>
-        <div><img src={data.message}/></div>
+        <button onClick={() => console.log("REFRESH DOG")}>
+          Get another random dog
+        </button>
+            <div><h2>{status}</h2></div>
+            <ImageViewer srcUrl = {data.message}></ImageViewer>
         </>
     )
 }
