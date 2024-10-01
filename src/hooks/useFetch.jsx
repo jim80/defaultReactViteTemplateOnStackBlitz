@@ -7,14 +7,17 @@ const useFetch = (url) => {
     const [status, setStatus] = useState('idle');
     const [data, setData] = useState([]);
 
+    const FETCHING_MESSAGE = "fetching"
+    const FETCHED_MESSAGE = "DONE! fetched"
+
     useEffect(() => {
         if (!url) return;
         const fetchData = async () => {
-            setStatus('fetching');
+            setStatus(FETCHING_MESSAGE);
             const response = await fetch(url);
             const data = await response.json();
             setData(data);
-            setStatus('fetched');
+            setStatus(FETCHED_MESSAGE);
         };
 
         fetchData();
