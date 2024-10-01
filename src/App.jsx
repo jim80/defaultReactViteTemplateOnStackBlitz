@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import './App.css';
-import Dog from './components/Dog'
+import FirstDog from './components/FirstDog'
 
 function App() {
   const [count, setCount] = useState(5);
 
   return (
     <>
-    <Dog></Dog>
+    <FirstDog></FirstDog>
       <p>The Default Vite + React Template on stackblitz, now as github repo, which seems to have got me the other editor? WHAT! ARGHHH</p>
       <div className="card">
         <button onClick={() => setCount((count) => count + 100)}>
