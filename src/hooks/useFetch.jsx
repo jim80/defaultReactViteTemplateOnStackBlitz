@@ -1,3 +1,6 @@
+// this is shitty, but it will do for the moment
+// find a package or extend it perhaps.
+
 import { useEffect, useState } from "react";
 
 const useFetch = (url) => {
@@ -6,12 +9,10 @@ const useFetch = (url) => {
 
     useEffect(() => {
         if (!url) return;
-        console.log("URL : " + url)
         const fetchData = async () => {
             setStatus('fetching');
             const response = await fetch(url);
             const data = await response.json();
-            //console.log(data);
             setData(data);
             setStatus('fetched');
         };
