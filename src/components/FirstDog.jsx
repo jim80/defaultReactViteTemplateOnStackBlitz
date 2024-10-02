@@ -1,20 +1,21 @@
-import useFetch from "../hooks/useFetch"
-
+import useFetch from "react-fetch-hook";
 import ImageViewer from './ImageViewer'
 
 const FirstDog = () => {
 
     const RANDOM_DOG_URL = "https://dog.ceo/api/breeds/image/random";
 
-    let { status, data } = useFetch (RANDOM_DOG_URL);
+    const { isLoading, data, error } = useFetch(RANDOM_DOG_URL);
 
     return (
         <>
+
         <button onClick={() => console.log("REFRESH DOG")}>
           Get another random dog
         </button>
-            <div><h2>{status}</h2></div>
-            <ImageViewer srcUrl = {data.message}></ImageViewer>
+        
+        {isLoading ? <h1>"LOADING"</h1> : <ImageViewer srcUrl = {data.message}></ImageViewer>}
+            
         </>
     )
 }
