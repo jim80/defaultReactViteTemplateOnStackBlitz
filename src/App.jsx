@@ -1,6 +1,6 @@
 
 import './App.css';
-import FirstDog from './components/FirstDog'
+import RandomDog from './components/RandomDog'
 import useCounter from './hooks/useCounter'
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-      <FirstDog></FirstDog>
+      <RandomDog></RandomDog>
       <div className="card">
       
       <button onClick={() => counterAdd()}>
