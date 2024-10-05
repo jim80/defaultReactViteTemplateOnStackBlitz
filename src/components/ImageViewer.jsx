@@ -14,8 +14,4 @@ const ImageViewer = (props) => {
 ImageViewer.propTypes = {
   srcUrl: PropTypes.string.isRequired,
 };
-
-ImageViewer.defaultProps = {
-  srcUrl: "",
-};
 export default ImageViewer;
