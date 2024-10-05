@@ -30,7 +30,7 @@ const RandomDog = () => {
       if (isLoading) {
         return <Loading />;
       } else {
-        if (data && data.success === false) {
+        if (data && data.status !== "success") {
           return <div>The Dogs API reported an error</div>;
         } else {
           if (data && data.message) {
