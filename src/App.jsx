@@ -1,5 +1,5 @@
 import "./App.css";
-import RandomDog from "./components/RandomDog";
+//import RandomDog from "./components/RandomDog";
 import TabComponent from "./components/TabComponent";
 
 function App() {
