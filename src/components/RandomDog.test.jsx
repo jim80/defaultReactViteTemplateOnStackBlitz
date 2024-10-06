@@ -11,13 +11,16 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe("RandomDog component", () => {
-  it("renders a button and displays a loading message when clicked", async () => {
-    const { getByText, getByRole } = render(<RandomDog />);
+  it("renders a button and displays a loading component when clicked", async () => {
+    const { getByText, getByRole, getByTestId } = render(<RandomDog />);
     const button = getByRole("button");
+
     expect(getByText("Get a random dog")).toBeInTheDocument();
 
     fireEvent.click(button);
-    expect(getByText("LOADING ....")).toBeInTheDocument();
+
+    // any old loading component will do so, no need to test for anything specific
+    expect(getByTestId("loadingComponent")).toBeInTheDocument();
   });
 
   it("renders an error message when the API returns an error", async () => {
@@ -32,12 +35,18 @@ describe("RandomDog component", () => {
       })
     );
 
-    const { getByText, getByRole } = render(<RandomDog />);
+    const { getByText, getByRole, getByTestId } = render(<RandomDog />);
     const button = getByRole("button");
     fireEvent.click(button);
 
     await waitFor(() =>
-      expect(getByText("ERROR : Error status : 404")).toBeInTheDocument()
+      //just expect that we have some error Component
+      expect(getByTestId("ErrorComponent")).toBeInTheDocument()
+    );
+
+    await waitFor(() =>
+      //just expect that the error component DOES contain the error status code somewhere
+      expect(getByText("404", { exact: false })).toBeInTheDocument()
     );
   });
 
@@ -56,5 +65,24 @@ describe("RandomDog component", () => {
     fireEvent.click(button);
 
     await waitFor(() => expect(getByRole("img")).toBeInTheDocument());
+  });
+
+  it("renders an error when the API returns an unsuccessful status", async () => {
+    server.use(
+      http.get("https://dog.ceo/api/breeds/image/random", () => {
+        return HttpResponse.json({
+          message: "https://example.com/image.jpg",
+          status: "failure",
+        });
+      })
+    );
+
+    const { getByText, getByRole } = render(<RandomDog />);
+    const button = getByRole("button");
+    fireEvent.click(button);
+
+    await waitFor(() =>
+      expect(getByText("The Dogs API reported an error")).toBeInTheDocument()
+    );
   });
 });
