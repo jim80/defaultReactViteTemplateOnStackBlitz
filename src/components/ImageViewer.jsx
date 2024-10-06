@@ -2,7 +2,7 @@ import "../App.css";
 import PropTypes from "prop-types";
 
 const ImageViewer = (props) => {
-  const { srcUrl } = props;
+  const { srcUrl = "" } = props;
   return (
     <>
       <div className="image-container">
@@ -12,6 +12,7 @@ const ImageViewer = (props) => {
   );
 };
 ImageViewer.propTypes = {
-  srcUrl: PropTypes.string.isRequired,
+  srcUrl: PropTypes.string,
 };
+
 export default ImageViewer;
