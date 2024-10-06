@@ -6,7 +6,18 @@ import { beforeAll, afterEach, afterAll, expect, describe, it } from "vitest";
 
 const server = setupServer();
 
-beforeAll(() => server.listen());
+beforeAll(() =>
+  server.listen({
+    onUnhandledRequest(request, print) {
+      // Do not print warnings on unhandled requests to the dogs API
+      if (request.url.includes("https://dog.ceo/api/breeds/image/random")) {
+        return;
+      }
+      // Print the regular MSW unhandled request warning otherwise.
+      print.warning();
+    },
+  })
+);
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
