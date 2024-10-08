@@ -4,12 +4,18 @@ import Loading from "./Loading";
 import Error from "./Error";
 import DrawingsList from "./DrawingsList";
 import DrawingCard from "./drawingCard";
+import SearchForm from "./SearchForm";
 
 const API_URL = "https://65ea11eec9bf92ae3d3b07d0.mockapi.io/api/v1/documents";
 
 const InterviewComp = () => {
   const [currentDrawing, setCurrentDrawing] = useState(null);
   const { isLoading, data: drawingsArray, error } = useFetch(API_URL);
+
+  const onSearch = (searchTerm) => {
+    console.log(searchTerm);
+    // setCurrentDrawing(getDrawingFromDrawingsArray(searchTerm));
+  };
 
   const onDrawingsListItemClicked = (id) => {
     setCurrentDrawing(getDrawingFromDrawingsArray(id));
@@ -22,7 +28,7 @@ const InterviewComp = () => {
     return drawingsArray.find((drawing) => drawing.id === id);
   };
 
-  let GetDrawingsList = () => {
+  let GetDrawingsComponent = () => {
     if (isLoading) {
       return <Loading />;
     }
@@ -34,6 +40,7 @@ const InterviewComp = () => {
     if (drawingsArray) {
       return (
         <>
+          <SearchForm onSearch={onSearch} />
           <DrawingsList
             onListItemClicked={onDrawingsListItemClicked}
             drawingsArray={drawingsArray}
@@ -46,7 +53,7 @@ const InterviewComp = () => {
   return (
     <>
       <h1>Browse Drawings</h1>
-      {GetDrawingsList()}
+      {GetDrawingsComponent()}
       {currentDrawing && <DrawingCard {...currentDrawing} />}
     </>
   );
