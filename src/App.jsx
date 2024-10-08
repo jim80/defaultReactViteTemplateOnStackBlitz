@@ -7,7 +7,6 @@ function App() {
     <>
       {/*  <RandomDog></RandomDog> */}
       <TabComponent></TabComponent>
-      <div className="card"></div>
     </>
   );
 }
