@@ -9,8 +9,8 @@ const DrawingsListItem = (props) => {
   return (
     <>
       <div onClick={click}>
-        <div>{"title : " + title}</div>
-        <div>{"description : " + description}</div>
+        <div>{"Title : " + title}</div>
+        <div>{"Description : " + description}</div>
       </div>{" "}
     </>
   );
