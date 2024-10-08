@@ -1,9 +1,10 @@
 import { useState } from "react";
 import "../App.css";
 import RandomDog from "./RandomDog";
+import InterviewComp from "./InterviewComp";
 
 const TabComponent = () => {
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
 
   const handleTabClick = (index) => {
     setActiveTab(index);
@@ -16,13 +17,13 @@ const TabComponent = () => {
           className={activeTab === 0 ? "tab active" : "tab"}
           onClick={() => handleTabClick(0)}
         >
-          Tab 1
+          Dogs API
         </li>
         <li
           className={activeTab === 1 ? "tab active" : "tab"}
           onClick={() => handleTabClick(1)}
         >
-          Tab 2
+          OREVTA
         </li>
         <li
           className={activeTab === 2 ? "tab active" : "tab"}
@@ -41,7 +42,7 @@ const TabComponent = () => {
 };
 
 const TabContent1 = () => <RandomDog></RandomDog>;
-const TabContent2 = () => <h2>Tab 2 Content</h2>;
+const TabContent2 = () => <InterviewComp />;
 const TabContent3 = () => <h2>Tab 3 Content</h2>;
 
 export default TabComponent;
