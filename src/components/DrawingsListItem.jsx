@@ -8,10 +8,10 @@ const DrawingsListItem = (props) => {
   };
   return (
     <>
-      <div onClick={click}>
+      <div data-testid="DrawingsListItem" onClick={click}>
         <div>{"Title : " + title}</div>
         <div>{"Description : " + description}</div>
-      </div>{" "}
+      </div>
     </>
   );
 };

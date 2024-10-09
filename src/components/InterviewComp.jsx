@@ -5,8 +5,7 @@ import Error from "./Error";
 import DrawingsList from "./DrawingsList";
 import DrawingCard from "./drawingCard";
 import SearchForm from "./SearchForm";
-
-const API_URL = "https://65ea11eec9bf92ae3d3b07d0.mockapi.io/api/v1/documents";
+import { API_URL } from "../constants/constants";
 
 const InterviewComp = () => {
   const [currentDrawing, setCurrentDrawing] = useState(null);

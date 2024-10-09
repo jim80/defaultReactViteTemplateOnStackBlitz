@@ -1,4 +1,4 @@
-const TEST_API_DATA = `
+const TEST_API_DATA = JSON.parse(`[
   {
     "id": "1",
     "title": "Structural Engineering Report for Building X",
@@ -150,6 +150,6 @@ const TEST_API_DATA = `
     "file_url": "https://example.com/documents/seismic-retrofit-analysis.pdf"
   }
 ]
-`;
+`);
 
-export default TEST_API_DATA;
+export { TEST_API_DATA };
