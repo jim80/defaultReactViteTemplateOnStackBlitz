@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor, getByText } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import InterviewComp from "./InterviewComp";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
@@ -23,18 +23,17 @@ beforeAll(() =>
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-describe("RandomDog component", () => {
-  it("renders a button and displays a loading component when clicked", async () => {
+describe("Interview Component", () => {
+  it("renders a loading component when the data is loading", async () => {
     const { getByTestId } = render(<InterviewComp />);
-    //const { getByText, getByRole, getByTestId } = render(<InterviewComp />);
-    /* const button = getByRole("button");
-
-    expect(getByText("Get a random dog")).toBeInTheDocument();
-
-    fireEvent.click(button); */
-
-    // any old loading component will do so, no need to test for anything specific
+    // any old loading component will do so, no need to test for anything specific content
     expect(getByTestId("loadingComponent")).toBeInTheDocument();
+  });
+
+  it("Should not render a drawing card when the list is being searched", async () => {
+    // TODO unless the drawing is still in the searched list ?
+    /* TODO */
+    expect(true).toBe(false);
   });
 
   it("renders an error message when the API returns an error", async () => {
@@ -77,63 +76,110 @@ describe("RandomDog component", () => {
     );
   });
 
-  it("renders a list of documents when the api returns data", async () => {
+  it("renders a full list of drawings when the api returns data", async () => {
     server.use(
       http.get(API_URL, () => {
         return HttpResponse.json(TEST_API_DATA);
       })
     );
 
-    const { getByText, getByTestId } = render(<InterviewComp />);
+    const { getByText, getAllByTestId } = render(<InterviewComp />);
 
-    //DrawingsListItem
+    await waitFor(() =>
+      expect(getByText("Browse Drawings")).toBeInTheDocument()
+    );
+
+    // check it displays the whole list of drawings
+    const numberOfDrawings = TEST_API_DATA.length;
+
+    await waitFor(() =>
+      expect(getAllByTestId("DrawingsListItem")).toHaveLength(numberOfDrawings)
+    );
+
+    // test the first drawing is rendered
+    const firstDrawing = TEST_API_DATA[0];
+    const firstDrawingListItem = getByText(firstDrawing.title, {
+      exact: false,
+    });
+    expect(firstDrawingListItem).toBeInTheDocument();
+    // and that it is visible
+    expect(firstDrawingListItem).toBeVisible();
+
+    // test the last drawing is rendered
+    const lastDrawing = TEST_API_DATA[numberOfDrawings - 1];
+    const lastDrawingList = getByText(lastDrawing.title, {
+      exact: false,
+    });
+    expect(lastDrawingList).toBeInTheDocument();
+  });
+
+  it("renders a Card component for a drawing when that drawings list item is clicked", async () => {
+    server.use(
+      http.get(API_URL, () => {
+        return HttpResponse.json(TEST_API_DATA);
+      })
+    );
+
+    const { getByText, getAllByTestId } = render(<InterviewComp />);
+
+    const numberOfItems = TEST_API_DATA.length;
+
+    await waitFor(() =>
+      expect(getAllByTestId("DrawingsListItem")).toHaveLength(numberOfItems)
+    );
+
+    const firstDrawing = TEST_API_DATA[0];
+    const firstDrawingListItem = getByText(firstDrawing.title, {
+      exact: false,
+    });
+
+    fireEvent.click(firstDrawingListItem);
+
+    // we'll test by the drawing data, not the Card component, testID etc
+    /* const title = firstDrawing.title;
+    const description = firstDrawing.description; */
+    const project = firstDrawing.project;
+    const category = firstDrawing.category;
+    const uploader = firstDrawing.uploader;
+    const uploaded_date = firstDrawing.uploaded_date;
+    const file_url = firstDrawing.file_url;
+
+    // TODO: check they are actually visible, or the card is no good!
+    expect(getByText(project)).toBeInTheDocument();
+    expect(getByText(category)).toBeInTheDocument();
+    expect(getByText(uploader)).toBeInTheDocument();
+    expect(getByText(uploaded_date)).toBeInTheDocument();
+    expect(getByText(file_url)).toBeInTheDocument();
+  });
+
+  it("renders the full list of drawings when the api returns data, and filters them when searched", async () => {
+    server.use(
+      http.get(API_URL, () => {
+        return HttpResponse.json(TEST_API_DATA);
+      })
+    );
+
+    const { getByText, getAllByTestId, getByRole } = render(<InterviewComp />);
 
     await waitFor(() =>
       expect(getByText("Browse Drawings")).toBeInTheDocument()
     );
 
     const numberOfItems = TEST_API_DATA.length;
-
-    /* await waitFor(() =>
-      // We expect 15 DrawingsListItem components because there are 15
-      // documents in the TEST_API_DATA array.
-      expect(getByTestId("DrawingsListItem")).toHaveLength(numberOfItems)
-    ); */
-  });
-
-  /* it("renders an image when the API returns a successful response", async () => {
-    server.use(
-      http.get("https://dog.ceo/api/breeds/image/random", () => {
-        return HttpResponse.json({
-          message: "https://example.com/image.jpg",
-          status: "success",
-        });
-      })
+    // check it displays the whole list of drawings
+    await waitFor(() =>
+      expect(getAllByTestId("DrawingsListItem")).toHaveLength(numberOfItems)
     );
+    // check it filters the list of drawings
+    const searchInput = getByRole("searchbox");
+    fireEvent.change(searchInput, { target: { value: "report" } });
 
-    const { getByRole } = render(<InterviewComp />);
-    const button = getByRole("button");
-    fireEvent.click(button);
-
-    await waitFor(() => expect(getByRole("img")).toBeInTheDocument());
-  }); */
-
-  /* it("renders an error when the API returns an unsuccessful status", async () => {
-    server.use(
-      http.get("https://dog.ceo/api/breeds/image/random", () => {
-        return HttpResponse.json({
-          message: "https://example.com/image.jpg",
-          status: "failure",
-        });
-      })
-    );
-
-    const { getByText, getByRole } = render(<InterviewComp />);
-    const button = getByRole("button");
-    fireEvent.click(button);
+    const expectedLengthAfterFilter = 3;
 
     await waitFor(() =>
-      expect(getByText("The Dogs API reported an error")).toBeInTheDocument()
+      expect(getAllByTestId("DrawingsListItem")).toHaveLength(
+        expectedLengthAfterFilter
+      )
     );
-  }); */
+  });
 });
