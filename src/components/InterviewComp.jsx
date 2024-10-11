@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import useFetch from "react-fetch-hook";
 import Loading from "./Loading";
 import Error from "./Error";
 import DrawingsList from "./DrawingsList";
 import DrawingCard from "./drawingCard";
 import SearchForm from "./SearchForm";
-
-const API_URL = "https://65ea11eec9bf92ae3d3b07d0.mockapi.io/api/v1/documents";
+import { API_URL } from "../constants/constants";
 
 const InterviewComp = () => {
   const [currentDrawing, setCurrentDrawing] = useState(null);
@@ -14,28 +13,24 @@ const InterviewComp = () => {
   const [filteredDrawings, setFilteredDrawings] = useState([]);
   const { isLoading, data: drawingsArray, error } = useFetch(API_URL);
 
-  let drawingsListSource =
-    searchString == "" ? drawingsArray : filteredDrawings;
+  useMemo(() => {
+    const filterDrawingsByTitleString = (searchString) => {
+      if (!drawingsArray) {
+        return null;
+      }
+      return drawingsArray.filter((drawing) =>
+        drawing.title.toLowerCase().includes(searchString.toLowerCase())
+      );
+    };
+    setFilteredDrawings(filterDrawingsByTitleString(searchString));
+  }, [searchString, drawingsArray]);
 
   const onSearch = (searchTerm) => {
     setSearchString(searchTerm);
-    let filtered = getDrawingByTitleString(searchTerm);
-    setFilteredDrawings(filtered);
   };
 
   const onDrawingsListItemClicked = (id) => {
     setCurrentDrawing(getDrawingFromDrawings(id));
-  };
-
-  const getDrawingByTitleString = (searchString) => {
-    if (!drawingsArray) {
-      return null;
-    }
-    return drawingsArray
-      .filter((drawing) =>
-        drawing.title.toLowerCase().includes(searchString.toLowerCase())
-      )
-      .sort((a, b) => a.title.localeCompare(b.title));
   };
 
   const getDrawingFromDrawings = (id) => {
@@ -43,6 +38,9 @@ const InterviewComp = () => {
       return null;
     }
     return drawingsArray.find((drawing) => drawing.id === id);
+  };
+  const clearCurrentDrawing = () => {
+    setCurrentDrawing(null);
   };
 
   ////////////////////////////// Render /////////////////////////////////////
@@ -70,9 +68,14 @@ const InterviewComp = () => {
         <SearchForm onSearch={onSearch} />
         <DrawingsList
           onListItemClicked={onDrawingsListItemClicked}
-          drawingsArray={drawingsListSource}
+          drawingsArray={filteredDrawings}
         ></DrawingsList>
-        {currentDrawing !== null && <DrawingCard {...currentDrawing} />}
+        {currentDrawing !== null && (
+          <DrawingCard
+            {...currentDrawing}
+            closeButtonClicked={clearCurrentDrawing}
+          />
+        )}
       </>
     );
   }

@@ -8,10 +8,14 @@ const DrawingsListItem = (props) => {
   };
   return (
     <>
-      <div onClick={click}>
+      <div
+        className="bg-white border border-gray-200 rounded-lg shadow p-5 hover:bg-gray-200"
+        data-testid="DrawingsListItem"
+        onClick={click}
+      >
         <div>{"Title : " + title}</div>
         <div>{"Description : " + description}</div>
-      </div>{" "}
+      </div>
     </>
   );
 };

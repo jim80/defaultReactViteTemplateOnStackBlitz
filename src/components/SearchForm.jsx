@@ -5,13 +5,19 @@ const SearchForm = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleInputChange = (event) => {
+    event.preventDefault();
     setSearchTerm(event.target.value);
     onSearch(event.target.value);
+  };
+
+  const formPreventSubmit = (event) => {
+    event.preventDefault();
   };
 
   return (
     <div>
       <form
+        onSubmit={formPreventSubmit}
         style={{
           display: "flex",
           flexDirection: "row",
