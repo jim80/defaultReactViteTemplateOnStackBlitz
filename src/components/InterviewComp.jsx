@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import useFetch from "react-fetch-hook";
 import Loading from "./Loading";
 import Error from "./Error";
@@ -13,28 +13,24 @@ const InterviewComp = () => {
   const [filteredDrawings, setFilteredDrawings] = useState([]);
   const { isLoading, data: drawingsArray, error } = useFetch(API_URL);
 
-  let drawingsListSource =
-    searchString == "" ? drawingsArray : filteredDrawings;
+  useMemo(() => {
+    const filterDrawingsByTitleString = (searchString) => {
+      if (!drawingsArray) {
+        return null;
+      }
+      return drawingsArray.filter((drawing) =>
+        drawing.title.toLowerCase().includes(searchString.toLowerCase())
+      );
+    };
+    setFilteredDrawings(filterDrawingsByTitleString(searchString));
+  }, [searchString, drawingsArray]);
 
   const onSearch = (searchTerm) => {
     setSearchString(searchTerm);
-    let filtered = getDrawingByTitleString(searchTerm);
-    setFilteredDrawings(filtered);
   };
 
   const onDrawingsListItemClicked = (id) => {
     setCurrentDrawing(getDrawingFromDrawings(id));
-  };
-
-  const getDrawingByTitleString = (searchString) => {
-    if (!drawingsArray) {
-      return null;
-    }
-    return drawingsArray
-      .filter((drawing) =>
-        drawing.title.toLowerCase().includes(searchString.toLowerCase())
-      )
-      .sort((a, b) => a.title.localeCompare(b.title));
   };
 
   const getDrawingFromDrawings = (id) => {
@@ -72,7 +68,7 @@ const InterviewComp = () => {
         <SearchForm onSearch={onSearch} />
         <DrawingsList
           onListItemClicked={onDrawingsListItemClicked}
-          drawingsArray={drawingsListSource}
+          drawingsArray={filteredDrawings}
         ></DrawingsList>
         {currentDrawing !== null && (
           <DrawingCard
