@@ -36,7 +36,7 @@ describe("Interview Component", () => {
     expect(true).toBe(false);
   });
 
-  it("renders an error message when the API returns an error", async () => {
+  it("renders an error component when the API returns an error", async () => {
     server.use(
       http.get(API_URL, () => {
         return new HttpResponse("Not found", {
@@ -125,31 +125,31 @@ describe("Interview Component", () => {
     const numberOfItems = TEST_API_DATA.length;
 
     await waitFor(() =>
-      expect(getAllByTestId("DrawingsListItem")).toHaveLength(numberOfItems)
+      expect(getAllByTestId("DrawingsListItem")).toHaveLength(15)
     );
 
-    const firstDrawing = TEST_API_DATA[0];
-    const firstDrawingListItem = getByText(firstDrawing.title, {
+    const lastDrawing = TEST_API_DATA[numberOfItems - 1];
+    const lastDrawingListItem = getByText(lastDrawing.title, {
       exact: false,
     });
 
-    fireEvent.click(firstDrawingListItem);
+    fireEvent.click(lastDrawingListItem);
 
     // we'll test by the drawing data, not the Card component, testID etc
-    /* const title = firstDrawing.title;
-    const description = firstDrawing.description; */
-    const project = firstDrawing.project;
-    const category = firstDrawing.category;
-    const uploader = firstDrawing.uploader;
-    const uploaded_date = firstDrawing.uploaded_date;
-    const file_url = firstDrawing.file_url;
+    /* const title = lastDrawing.title;
+    const description = lastDrawing.description; */
+    const project = lastDrawing.project;
+    const category = lastDrawing.category;
+    const uploader = lastDrawing.uploader;
+    const uploaded_date = lastDrawing.uploaded_date;
+    const file_url = lastDrawing.file_url;
 
-    // TODO: check they are actually visible, or the card is no good!
-    expect(getByText(project)).toBeInTheDocument();
-    expect(getByText(category)).toBeInTheDocument();
-    expect(getByText(uploader)).toBeInTheDocument();
-    expect(getByText(uploaded_date)).toBeInTheDocument();
-    expect(getByText(file_url)).toBeInTheDocument();
+    // check they are actually visible, or the card is no good!
+    expect(getByText(project)).toBeVisible();
+    expect(getByText(category)).toBeVisible();
+    expect(getByText(uploader)).toBeVisible();
+    expect(getByText(uploaded_date)).toBeVisible();
+    expect(getByText(file_url)).toBeVisible();
   });
 
   it("renders the full list of drawings when the api returns data, and filters them when searched", async () => {
@@ -183,3 +183,4 @@ describe("Interview Component", () => {
     );
   });
 });
+=

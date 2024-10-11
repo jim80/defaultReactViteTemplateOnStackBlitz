@@ -43,6 +43,9 @@ const InterviewComp = () => {
     }
     return drawingsArray.find((drawing) => drawing.id === id);
   };
+  const clearCurrentDrawing = () => {
+    setCurrentDrawing(null);
+  };
 
   ////////////////////////////// Render /////////////////////////////////////
 
@@ -71,7 +74,12 @@ const InterviewComp = () => {
           onListItemClicked={onDrawingsListItemClicked}
           drawingsArray={drawingsListSource}
         ></DrawingsList>
-        {currentDrawing !== null && <DrawingCard {...currentDrawing} />}
+        {currentDrawing !== null && (
+          <DrawingCard
+            {...currentDrawing}
+            closeButtonClicked={clearCurrentDrawing}
+          />
+        )}
       </>
     );
   }
