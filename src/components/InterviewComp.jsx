@@ -17,7 +17,7 @@ const InterviewComp = () => {
   useMemo(() => {
     const filterDrawingsByTitleString = (searchString) => {
       if (!drawingsArray) {
-        return null;
+        return [];
       }
       return drawingsArray.filter((drawing) =>
         drawing.title.toLowerCase().includes(searchString.toLowerCase())
@@ -47,7 +47,7 @@ const InterviewComp = () => {
 
   const onCloseModal = () => {
     setModalShowing(false);
-    //clearCurrentDrawing();
+    clearCurrentDrawing();
   };
 
   ////////////////////////////// Render /////////////////////////////////////
@@ -80,12 +80,14 @@ const InterviewComp = () => {
               drawingsArray={filteredDrawings}
             ></DrawingsList>
           </div>
-          <div className="hidden md:block w:1/2">
-            <DrawingCard
-              {...currentDrawing}
-              closeButtonClicked={onCloseModal}
-            />
-          </div>
+          {currentDrawing && (
+            <div className="hidden md:block w:1/2">
+              <DrawingCard
+                {...currentDrawing}
+                closeButtonClicked={onCloseModal}
+              />
+            </div>
+          )}
         </div>
         {modalShowing && currentDrawing && (
           <div className="fixed inset-0 bg-opacity-50 bg-black flex justify-center items-center md:hidden">
