@@ -11,6 +11,7 @@ const InterviewComp = () => {
   const [currentDrawing, setCurrentDrawing] = useState(null);
   const [searchString, setSearchString] = useState("");
   const [filteredDrawings, setFilteredDrawings] = useState([]);
+  const [modalShowing, setModalShowing] = useState(false);
   const { isLoading, data: drawingsArray, error } = useFetch(API_URL);
 
   useMemo(() => {
@@ -31,6 +32,7 @@ const InterviewComp = () => {
 
   const onDrawingsListItemClicked = (id) => {
     setCurrentDrawing(getDrawingFromDrawings(id));
+    setModalShowing(true);
   };
 
   const getDrawingFromDrawings = (id) => {
@@ -41,6 +43,11 @@ const InterviewComp = () => {
   };
   const clearCurrentDrawing = () => {
     setCurrentDrawing(null);
+  };
+
+  const onCloseModal = () => {
+    setModalShowing(false);
+    //clearCurrentDrawing();
   };
 
   ////////////////////////////// Render /////////////////////////////////////
@@ -65,16 +72,28 @@ const InterviewComp = () => {
     return (
       <>
         <p>Browse Drawings</p>
-        <SearchForm onSearch={onSearch} />
-        <DrawingsList
-          onListItemClicked={onDrawingsListItemClicked}
-          drawingsArray={filteredDrawings}
-        ></DrawingsList>
-        {currentDrawing !== null && (
-          <DrawingCard
-            {...currentDrawing}
-            closeButtonClicked={clearCurrentDrawing}
-          />
+        <div className="flex flex-col md:flex-row">
+          <div>
+            <SearchForm onSearch={onSearch} />
+            <DrawingsList
+              onListItemClicked={onDrawingsListItemClicked}
+              drawingsArray={filteredDrawings}
+            ></DrawingsList>
+          </div>
+          <div className="hidden md:block w:1/2">
+            <DrawingCard
+              {...currentDrawing}
+              closeButtonClicked={onCloseModal}
+            />
+          </div>
+        </div>
+        {modalShowing && currentDrawing && (
+          <div className="fixed inset-0 bg-opacity-50 bg-black flex justify-center items-center md:hidden">
+            <DrawingCard
+              {...currentDrawing}
+              closeButtonClicked={onCloseModal}
+            />
+          </div>
         )}
       </>
     );

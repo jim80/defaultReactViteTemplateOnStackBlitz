@@ -15,33 +15,31 @@ const DrawingCard = ({
     closeButtonClicked();
   };
   return (
-    <div className="fixed inset-0 w-full h-full bg-opacity-50 bg-black flex justify-center items-center">
-      <div className="card">
-        <button
-          className="btn btn-sm btn-error float-right text-black "
-          onClick={buttonClicked}
-        >
-          X
-        </button>
-        <h2 className="card-title">{title}</h2>
-        <p className="card-description">{description}</p>
-        <p className="card-detail">
-          <span className="card-label">Project:</span> {project}
-        </p>
-        <p className="card-detail">
-          <span className="card-label">Category:</span> {category}
-        </p>
-        <p className="card-detail">
-          <span className="card-label">Uploaded by:</span> {uploader}
-        </p>
-        <p className="card-detail">
-          <span className="card-label">Uploaded on:</span> {uploaded_date}
-        </p>
-        <p className="card-detail">
-          <span className="card-label">File URL:</span>{" "}
-          <a href={file_url}>{file_url}</a>
-        </p>
-      </div>
+    <div className="card w-4/5">
+      <button
+        className="btn btn-sm btn-error float-right text-black md:hidden"
+        onClick={buttonClicked}
+      >
+        X
+      </button>
+      <h2 className="card-title">{title}</h2>
+      <p className="card-description">{description}</p>
+      <p className="card-detail">
+        <span className="card-label">Project:</span> {project}
+      </p>
+      <p className="card-detail">
+        <span className="card-label">Category:</span> {category}
+      </p>
+      <p className="card-detail">
+        <span className="card-label">Uploaded by:</span> {uploader}
+      </p>
+      <p className="card-detail">
+        <span className="card-label">Uploaded on:</span> {uploaded_date}
+      </p>
+      <p className="card-detail">
+        <span className="card-label">File URL:</span>{" "}
+        <a href={file_url}>{file_url}</a>
+      </p>
     </div>
   );
 };
