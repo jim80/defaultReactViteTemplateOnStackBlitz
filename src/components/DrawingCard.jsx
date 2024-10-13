@@ -15,7 +15,7 @@ const DrawingCard = ({
     closeButtonClicked();
   };
   return (
-    <div className="card w-4/5">
+    <div className="card w-4/5 md:w-96">
       <button
         className="btn btn-sm btn-error float-right text-black md:hidden"
         onClick={buttonClicked}

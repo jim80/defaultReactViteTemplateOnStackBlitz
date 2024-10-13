@@ -15,8 +15,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-
 }
 
 a {
@@ -30,10 +28,11 @@ a:hover {
 
 body {
   margin: 0;
-  /* display: flex;
-  place-items: middle; */
+  display: flex;
+  place-items: middle;
   min-width: 320px;
-  min-height: 100vh;
+  max-height: 100vh;
+  /*  overflow: hidden; */
 }
 
 h1 {
@@ -72,5 +71,3 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-
-

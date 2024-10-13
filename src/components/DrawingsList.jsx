@@ -4,9 +4,15 @@ import DrawingsListItem from "./DrawingsListItem";
 
 const DrawingsList = (props) => {
   const { drawingsArray, onListItemClicked } = props;
+
+  /* const scrollableStyle = {
+    overflowY: "scroll",
+    maxHeight: "100vh",
+  }; */
+
   return (
     <>
-      <div>
+      <div /* style={scrollableStyle} */>
         {drawingsArray.map((drawing) => (
           <DrawingsListItem
             onListItemClicked={onListItemClicked}
