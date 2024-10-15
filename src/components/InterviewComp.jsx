@@ -5,6 +5,7 @@ import Error from "./Error";
 import DrawingsList from "./DrawingsList";
 import DrawingCard from "./drawingCard";
 import SearchForm from "./SearchForm";
+import HeaderComp from "./HeaderComp";
 import { API_URL } from "../constants/constants";
 
 const InterviewComp = () => {
@@ -68,22 +69,40 @@ const InterviewComp = () => {
     );
   }
 
+  /* 
+  margin: 10px;
+  background: #2196F3;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  */
+
   if (drawingsArray) {
     return (
       <>
-        <p>Browse Drawings</p>
-        <div className="flex flex-col md:flex-row">
-          <div>
-            <SearchForm onSearch={onSearch} />
+        <div className="absolute inset-0 flex flex-col">
+          <HeaderComp></HeaderComp>
+          <SearchForm onSearch={onSearch} />
+          <div className="flex flexcol md:flex-row flex-grow overflow-y-scroll">
             <div className="overflow-y-scroll">
-              <DrawingsList
-                onListItemClicked={onDrawingsListItemClicked}
-                drawingsArray={filteredDrawings}
-              ></DrawingsList>
+              <div className="overflow-y-scroll">
+                <DrawingsList
+                  onListItemClicked={onDrawingsListItemClicked}
+                  drawingsArray={filteredDrawings}
+                ></DrawingsList>
+              </div>
             </div>
+            {currentDrawing && (
+              <div className="hidden md:block w:1/2">
+                <DrawingCard
+                  {...currentDrawing}
+                  closeButtonClicked={onCloseModal}
+                />
+              </div>
+            )}
           </div>
-          {currentDrawing && (
-            <div className="hidden md:block w:1/2">
+          {modalShowing && currentDrawing && (
+            <div className="fixed inset-0 bg-opacity-50 bg-black flex justify-center items-center md:hidden">
               <DrawingCard
                 {...currentDrawing}
                 closeButtonClicked={onCloseModal}
@@ -91,14 +110,6 @@ const InterviewComp = () => {
             </div>
           )}
         </div>
-        {modalShowing && currentDrawing && (
-          <div className="fixed inset-0 bg-opacity-50 bg-black flex justify-center items-center md:hidden">
-            <DrawingCard
-              {...currentDrawing}
-              closeButtonClicked={onCloseModal}
-            />
-          </div>
-        )}
       </>
     );
   }
