@@ -83,14 +83,12 @@ const InterviewComp = () => {
         <div className="absolute inset-0 flex flex-col">
           <HeaderComp></HeaderComp>
           <SearchForm onSearch={onSearch} />
-          <div className="flex flexcol md:flex-row flex-grow overflow-y-scroll">
-            <div className="overflow-y-scroll">
-              <div className="overflow-y-scroll">
-                <DrawingsList
-                  onListItemClicked={onDrawingsListItemClicked}
-                  drawingsArray={filteredDrawings}
-                ></DrawingsList>
-              </div>
+          <div className="flex flexcol md:flex-row flex-grow overflow-y-scroll min-h-0">
+            <div className="overflow-y-scroll flex-grow">
+              <DrawingsList
+                onListItemClicked={onDrawingsListItemClicked}
+                drawingsArray={filteredDrawings}
+              ></DrawingsList>
             </div>
             {currentDrawing && (
               <div className="hidden md:block w:1/2">
