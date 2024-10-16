@@ -76,6 +76,18 @@ describe("Interview Component", () => {
     );
   });
 
+  it("renders a header after the api returns data", async () => {
+    server.use(
+      http.get(API_URL, () => {
+        return HttpResponse.json(TEST_API_DATA);
+      })
+    );
+
+    const { getByTestId } = render(<InterviewComp />);
+
+    await waitFor(() => expect(getByTestId("HeaderComponent")).toBeVisible());
+  });
+
   it("renders a full list of drawings when the api returns data", async () => {
     server.use(
       http.get(API_URL, () => {
@@ -84,10 +96,6 @@ describe("Interview Component", () => {
     );
 
     const { getByText, getAllByTestId } = render(<InterviewComp />);
-
-    await waitFor(() =>
-      expect(getByText("Browse Drawings")).toBeInTheDocument()
-    );
 
     // check it displays the whole list of drawings
     const numberOfDrawings = TEST_API_DATA.length;
@@ -178,11 +186,7 @@ describe("Interview Component", () => {
       })
     );
 
-    const { getByText, getAllByTestId, getByRole } = render(<InterviewComp />);
-
-    await waitFor(() =>
-      expect(getByText("Browse Drawings")).toBeInTheDocument()
-    );
+    const { getAllByTestId, getByRole } = render(<InterviewComp />);
 
     const numberOfItems = TEST_API_DATA.length;
     // check it displays the whole list of drawings

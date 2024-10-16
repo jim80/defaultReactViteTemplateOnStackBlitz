@@ -1,8 +1,10 @@
 const HeaderComp = () => {
   return (
-    <header>
-      <h1>Drawing Browser</h1>
-    </header>
+    <div data-testid="HeaderComponent">
+      <header>
+        <h1>Drawing Browser</h1>
+      </header>
+    </div>
   );
 };
 
