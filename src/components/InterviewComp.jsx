@@ -6,6 +6,7 @@ import DrawingsList from "./DrawingsList";
 import DrawingCard from "./drawingCard";
 import SearchForm from "./SearchForm";
 import HeaderComp from "./HeaderComp";
+import ModalWrapper from "./ModalWrapper";
 import { API_URL } from "../constants/constants";
 
 const InterviewComp = () => {
@@ -69,14 +70,6 @@ const InterviewComp = () => {
     );
   }
 
-  /* 
-  margin: 10px;
-  background: #2196F3;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  */
-
   if (drawingsArray) {
     return (
       <>
@@ -100,11 +93,13 @@ const InterviewComp = () => {
             )}
           </div>
           {modalShowing && currentDrawing && (
-            <div className="fixed inset-0 bg-opacity-50 bg-black flex justify-center items-center md:hidden">
-              <DrawingCard
-                {...currentDrawing}
-                closeButtonClicked={onCloseModal}
-              />
+            <div className="md:hidden">
+              <ModalWrapper>
+                <DrawingCard
+                  {...currentDrawing}
+                  closeButtonClicked={onCloseModal}
+                />
+              </ModalWrapper>
             </div>
           )}
         </div>
