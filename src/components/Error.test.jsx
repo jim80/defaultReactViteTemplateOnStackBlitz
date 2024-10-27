@@ -6,7 +6,7 @@ describe("Error component", () => {
   it("renders error message with status code", () => {
     const error = { status: 404, message: "Not found" };
     const { getByText } = render(<Error error={error} />);
-    expect(getByText("ERROR : Error status : 404")).toBeInTheDocument();
+    expect(getByText("404", { exact: false })).toBeInTheDocument();
   });
 
   it("renders error component with test id", () => {

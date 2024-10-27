@@ -30,12 +30,6 @@ describe("Interview Component", () => {
     expect(getByTestId("loadingComponent")).toBeInTheDocument();
   });
 
-  /* it("Should not render a drawing card when the list is being searched", async () => {
-    // TODO unless the drawing is still in the searched list ?
-    
-    expect(true).toBe(false);
-  }); */
-
   it("renders an error component when the API returns an error", async () => {
     server.use(
       http.get(API_URL, () => {
@@ -122,6 +116,8 @@ describe("Interview Component", () => {
   });
 
   it("renders a Card component for a drawing when that drawings list item is clicked", async () => {
+    const numberOfItems = TEST_API_DATA.length;
+
     server.use(
       http.get(API_URL, () => {
         return HttpResponse.json(TEST_API_DATA);
@@ -129,21 +125,18 @@ describe("Interview Component", () => {
     );
 
     const { getByText, getAllByText, getAllByTestId } = render(
-      <InterviewComp />
+      <InterviewComp />,
+      { viewportWidth: 320, viewportHeight: 1200 }
     );
 
-    const numberOfItems = TEST_API_DATA.length;
-
     await waitFor(() =>
-      expect(getAllByTestId("DrawingsListItem")).toHaveLength(15)
+      expect(getAllByTestId("DrawingsListItem")).toHaveLength(numberOfItems)
     );
 
     const lastDrawing = TEST_API_DATA[numberOfItems - 1];
     const lastDrawingListItem = getByText(lastDrawing.title, {
       exact: false,
     });
-
-    fireEvent.click(lastDrawingListItem);
 
     // we'll test by the drawing data, not the Card component, testID etc
     /* const title = lastDrawing.title;
@@ -154,7 +147,13 @@ describe("Interview Component", () => {
     const uploaded_date = lastDrawing.uploaded_date;
     const file_url = lastDrawing.file_url;
 
+    fireEvent.click(lastDrawingListItem);
+
     // check they are actually visible, or the card is no good!
+
+    // this turns out to be hard to test for, and tobevisible does not seem to work,
+    // so that needs looking at and debugging
+
     // ANd OK it now fails, because I'm rendering two cards for the modal and the md version
     // one is hidden, of course
 
@@ -162,21 +161,18 @@ describe("Interview Component", () => {
 
     // getAllByText will return an array of all elements that contain the text
     // we don't know which one is visible, so we just check that the first or second one is
-    // we could also use getAllByRole("button") and check that the first one is visible
-    // but that might not be unique, so we check the text we know is unique
-    expect(getAllByText(project)[0] || getAllByText(project)[1]).toBeVisible();
-    expect(
-      getAllByText(category)[0] || getAllByText(category)[1]
-    ).toBeVisible();
-    expect(
-      getAllByText(uploader)[0] || getAllByText(uploader)[1]
-    ).toBeVisible();
-    expect(
-      getAllByText(uploaded_date)[0] || getAllByText(uploaded_date)[1]
-    ).toBeVisible();
-    expect(
-      getAllByText(file_url)[0] || getAllByText(file_url)[1]
-    ).toBeVisible();
+
+    expect(getAllByText(project)[0]).not.toBeVisible();
+    expect(getAllByText(category)[0]).not.toBeVisible();
+    expect(getAllByText(uploader)[0]).not.toBeVisible();
+    expect(getAllByText(uploaded_date)[0]).not.toBeVisible();
+    expect(getAllByText(file_url)[0]).not.toBeVisible();
+
+    expect(getAllByText(project)[1]).toBeVisible();
+    expect(getAllByText(category)[1]).toBeVisible();
+    expect(getAllByText(uploader)[1]).toBeVisible();
+    expect(getAllByText(uploaded_date)[1]).toBeVisible();
+    expect(getAllByText(file_url)[1]).toBeVisible();
   });
 
   it("renders the full list of drawings when the api returns data, and filters them when searched", async () => {
