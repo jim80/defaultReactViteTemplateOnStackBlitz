@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import useFetch from "react-fetch-hook";
 import Loading from "./Loading";
-import Error from "./Error";
+import ErrorComp from "./ErrorComp";
 import DrawingsList from "./DrawingsList";
 import DrawingCard from "./drawingCard";
 import SearchForm from "./SearchForm";
@@ -59,7 +59,7 @@ const InterviewComp = () => {
   }
 
   if (error) {
-    return <Error error={error} />;
+    return <ErrorComp error={error} />;
   }
 
   if (drawingsArray && drawingsArray.length === 0) {

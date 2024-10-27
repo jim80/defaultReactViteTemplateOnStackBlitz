@@ -1,7 +1,7 @@
 import "../App.css";
 import PropTypes from "prop-types";
 
-const Error = (props) => {
+const ErrorComp = (props) => {
   const { error } = props;
   return (
     <>
@@ -11,7 +11,7 @@ const Error = (props) => {
     </>
   );
 };
-Error.propTypes = {
+ErrorComp.propTypes = {
   error: PropTypes.object.isRequired,
 };
-export default Error;
+export default ErrorComp;
